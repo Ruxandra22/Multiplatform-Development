@@ -1,10 +1,4 @@
-===============================================================================
-OSMAN MARIA - RUXANDRA
-GRUPA 334CA
-==========================  TEMA 1 SO  ========================================
-
-
-  Am structurat tema in mai multe fisiere, astfel:
+  Am structurat codul in mai multe fisiere, astfel:
     - in main.c am functia main in care am apelat functia de parsare;
     - in parsecommand.c am realizat parsarea inputului si in functie de acesta,
       am apelat functiile respective pentru comenzile introduse
