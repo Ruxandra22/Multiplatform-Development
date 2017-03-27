@@ -1,0 +1,88 @@
+===============================================================================
+OSMAN MARIA - RUXANDRA
+GRUPA 334CA
+==========================  TEMA 1 SO  ========================================
+
+
+  Am structurat tema in mai multe fisiere, astfel:
+    - in main.c am functia main in care am apelat functia de parsare;
+    - in parsecommand.c am realizat parsarea inputului si in functie de acesta,
+      am apelat functiile respective pentru comenzile introduse
+    - in bucket.h mi-am declarat functiile specifice listei si structura pentru
+      a crea o lista inlantuita;
+    - in bucket.c am implementat functiile pentru lista;
+    - in hashtable.h mi-am definit functiile pentru hashtable si structura
+      pentru a crea un vector de liste;
+    - in hashtable.c am implementat functiile specifice hashtable-ului;
+
+    Pasii pentru implementare:
+      1) In main, in functile de cati parametri primesc in linia de comanda,
+      verific mai intai daca nu am cumva mai putini parametri sau daca dimen-
+      siunea hashtable-ului data este <= 0. In aceste cazuri, programul se 
+      termina.
+
+      2) Urmatorul pas este crearea hashtable-ului, prin apelul create_hashtable
+      care aloca o structura de tip hashtable de o anumita dimensiune si seteaza
+      toate bucket-urile pe NULL.
+
+      3) Daca am doar 2 parametri, inseamna ca citesc de la stdin, iar daca am 3 
+      parametri, inseamna ca citesc din fisier si apelez functia de parsare.
+
+      4) In functia de parsare, realizez anumite operatii pe hashtable:
+
+        a) daca este comanda "add", apelez functia de adaugare a unui cuvant in
+          hashtable. In acea functie, aflu indexul bucket-ului in care trebuie
+          sa adaug cuvantul, iar apoi apelez functia push() pentru introducere
+          in lista. In aceasta functie, cream mai intai celula si parcurgem 
+          lista cat timp nu gasim celule nule, iar in cazul in care gasim una 
+          nula, acolopunem cuvantul respectiv. De asemenea, in functia 
+          create_cell(), aloc memorie pentru o variabila de tip bucket si ii 
+          copiez cuvantul.
+        b) daca este comanda "remove", apelez functia remove_hash, pentru a 
+          sterge un cuvant din hashtable. In aceasta functie, verific mai intai 
+          daca exsita cuvantul cu functia find(in aceasta functie, aflu indexul 
+          bucket-ului si daca in el apare cuvantul, returnez 1), apoi apelez
+          functia de remove_list(), care are 3 cazuri:
+              - daca este primul cuvant din lista, dar lista nu contine doar un
+              element, atunci il sterg pe primul si setez al doilea nod ca
+              fiind primul; daca este singurul element din lista, il eliberez
+              - daca este in interiorul listei, atunci iau un pointer auxiliar
+              pentru a putea retine doi pointeri la lista si a reface legatura
+              dintre noduri.
+              - daca este in ultimul nod din lista, atunci ii setez next-ul
+              penultimului la NULL si ii dau free ultimului;
+        c) daca este comanda "find", verific cati parametri sunt dati:
+              - daca sunt doar 2 parametri, atunci scriem rezultatul la consola;
+              - daca sunt 3 parametri, atunci deschidem fisierul respectiv si 
+              scriem rezultatul in el.
+              Pentru a afla rezultatul acestei functii, apelam functia find(),
+              pe care am explicat-o mai sus(la remove).
+        d) daca este comanda "clear ", atunci apelez functia clear() care ia
+          fiecare bucket si il dezaloca, folosind un auxiliar cand acesta se 
+          plimba prin lista.
+        e) daca este comanda "print_bucket", verificam mai intai daca indexul
+          bucket-ului care trebuie printat si este dat de la intrare, este un
+          numar, iar apoi, daca avem doi parametri, printam la consola, atlfel,
+          printam in fiserul dat ca al treilea argument. Aici se apeleaza 
+          functia print_bucket(), care verifica mai intai daca lista este nula, 
+          iar daca nu, atunci parcurge toata lista si printeaza fiecare cuvant 
+          in parte.
+        f) daca este comanda "print", atunci verificam daca mai are un parametru: 
+          daca da, atunci scriem rezultatul in fisierul respectiv, iar daca nu 
+          mai are parametri, scriem rezultatul la consola. Aici apelez functia 
+          print_hash() care verifica mai intai daca hashtable-ul este gol. Daca 
+          nu este, atunci itereaza prin fiecare lista si apeleaza functia 
+          print_bucket(), pe care am explicat-o mai sus.
+        e) daca este comanda "resize", verific care este cel de-al doilea 
+            parametru:
+            - daca este "double", atunci calculez o noua dimensiune, ca fiind 2 x
+              dimensiunea veche, iar apoi apelez functia resize();
+            - daca este "halve", atunci calculez o noua dimensiune, ca fiind 
+            dimensiunea veche / 2, iar apoi apelez functia resize();
+            In functia resize(), imi creez o noua tabela cu dimensiunea noua si
+            copiez toate elementele din tabela veche in cea noua. In final, 
+            dezaloc tabela veche si o returnez pe cea noua.
+        f) daca este orice alta comanda, dau exit(-1) pentru a iesi din program.
+
+        In final, in main, fac dezalocarea de memorie pentru hashtable doar in 
+        cazul in care acesta un este NULL, prin functia destroy_hash().
