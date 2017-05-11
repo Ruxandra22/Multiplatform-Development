@@ -10,7 +10,7 @@
     - in hashtable.c am implementat functiile specifice hashtable-ului;
 
     Pasii pentru implementare:
-      1) In main, in functile de cati parametri primesc in linia de comanda,
+      1) In main, in functie de cati parametri primesc in linia de comanda,
       verific mai intai daca nu am cumva mai putini parametri sau daca dimen-
       siunea hashtable-ului data este <= 0. In aceste cazuri, programul se 
       termina.
